@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Health Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="container">
+    <header>
+      <h1>Personal Health Dashboard</h1>
+      <p class="subtitle">Weather · Air Quality · BMI · Health Tips</p>
+    </header>
+
+    <!-- Search Controls -->
+    <section class="controls">
+      <input id="cityInput" placeholder="Enter city (e.g. Mumbai)" />
+      <button id="searchBtn">Search</button>
+      <button id="locBtn">Use My Location</button>
+    </section>
+
+<!-- Dashboard Cards -->
+<section class="dashboard">
+
+  <!-- WEATHER CARD -->
+  <div class="card weather" id="weatherCard">
+    <div class="icon">☀️</div>
+    <h2>Weather</h2>
+    <div id="weatherInfo">Search a city or use location</div>
+  </div>
+
+  <!-- AQI CARD -->
+  <div class="card aqi" id="aqiCard">
+    <div class="icon">🌫️</div>
+    <h2>Air Quality</h2>
+    <div id="aqiInfo">—</div>
+  </div>
+
+  <!-- BMI CARD -->
+  <div class="card bmi" id="bmiCard">
+    <div class="icon">⚖️</div>
+    <h2>BMI & Water</h2>
+
+    <label>Height (cm):
+      <input id="height" type="number" />
+    </label>
+
+    <label>Weight (kg):
+      <input id="weight" type="number" />
+    </label>
+
+    <button id="calcBmiBtn">Calculate</button>
+    <div id="bmiResult">Enter height & weight</div>
+  </div>
+
+</section>
+
+<!-- ADVICE CARD -->
+<section class="card advice" id="adviceCard">
+  <div class="icon">💡</div>
+  <h2>Health Advice</h2>
+  <div id="advice">Advice will appear based on weather, AQI, and BMI.</div>
+</section>
+
+
+    <footer>
+      <small>Built with HTML, CSS & JavaScript · Uses OpenWeather APIs</small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
