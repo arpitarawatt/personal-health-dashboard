@@ -108,11 +108,30 @@ async function fetchByCoords(lat, lon) {
 // --- Display weather summary ---
 function displayWeather({ name, main, weather }) {
   const desc = weather[0].description;
+  const iconCode = weather[0].icon;
+
+  const weatherIcon = document.getElementById("weatherIcon");
+
+  // Remove leftover emoji just in case
+  weatherIcon.textContent = "";
+
+  // Insert OpenWeather icon with fallback
+  weatherIcon.innerHTML = `
+    <img 
+      src="https://openweathermap.org/img/wn/${iconCode}@2x.png"
+      alt="${desc}"
+      onerror="this.onerror=null; this.src='https://openweathermap.org/img/wn/01d@2x.png'"
+    >
+  `;
+
+  // Weather details text
   weatherInfo.innerHTML = `
     <strong>${name}</strong><br/>
     ${desc} · ${main.temp.toFixed(1)}°C · Humidity ${main.humidity}%`;
+
   makeAdvice();
 }
+
 
 // --- Fetch Air Quality from OpenWeather ---
 async function fetchAirQuality(lat, lon) {
@@ -196,3 +215,32 @@ function makeAdvice() {
 
   adviceDiv.innerHTML = tips.length ? `<ul>${tips.map(t => `<li>${t}</li>`).join("")}</ul>` : "No data yet.";
 }
+
+/* ============================
+   DARK MODE TOGGLE
+============================ */
+const themeButton = document.createElement("button");
+themeButton.className = "theme-toggle";
+themeButton.id = "themeToggle";
+themeButton.textContent = "🌙 Dark Mode";
+
+document.querySelector("header").appendChild(themeButton);
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+  themeButton.textContent = "☀️ Light Mode";
+}
+
+// Toggle theme on click
+themeButton.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  if (document.body.classList.contains("dark")) {
+    themeButton.textContent = "☀️ Light Mode";
+    localStorage.setItem("theme", "dark");
+  } else {
+    themeButton.textContent = "🌙 Dark Mode";
+    localStorage.setItem("theme", "light");
+  }
+});
