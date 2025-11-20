@@ -203,3 +203,40 @@ footer {
   color: var(--muted);
   font-size: .85rem;
 }
+
+.weather-icon-animate {
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: weatherFade 0.6s ease forwards;
+}
+
+@keyframes weatherFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.aqi-pulse {
+  animation: aqiPulse 1.6s infinite ease-in-out;
+}
+
+@keyframes aqiPulse {
+  0% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.85; }
+}
+
+.card {
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  animation: cardPop 0.5s ease forwards;
+}
+
+@keyframes cardPop {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+

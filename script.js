@@ -108,21 +108,30 @@ async function fetchByCoords(lat, lon) {
 // --- Display weather summary ---
 function displayWeather({ name, main, weather }) {
   const desc = weather[0].description;
-  const iconCode = weather[0].icon;
-
+  const iconCode = weather[0].icon; // like "01d", "09n", "50d"
   const weatherIcon = document.getElementById("weatherIcon");
 
-  // Remove leftover emoji just in case
+  // Clear previous icon
   weatherIcon.textContent = "";
 
-  // Insert OpenWeather icon with fallback
-  weatherIcon.innerHTML = `
-    <img 
-      src="https://openweathermap.org/img/wn/${iconCode}@2x.png"
-      alt="${desc}"
-      onerror="this.onerror=null; this.src='https://openweathermap.org/img/wn/01d@2x.png'"
-    >
-  `;
+  // SVG file path
+  const svgPath = `icons/${iconCode}.svg`;
+
+  // Extract base code (e.g., “50” from "50n")
+  const baseCode = iconCode.slice(0, 2);
+
+  // Day fallback (e.g., 50d for 50n)
+  const fallbackDay = `icons/${baseCode}d.svg`;
+
+  // Try loading the exact icon
+  fetch(svgPath).then(res => {
+    if (res.ok) {
+      weatherIcon.innerHTML = `<img src="${svgPath}" alt="${desc}">`;
+    } else {
+      // fallback to day icon
+      weatherIcon.innerHTML = `<img src="${fallbackDay}" alt="${desc}">`;
+    }
+  });
 
   // Weather details text
   weatherInfo.innerHTML = `
@@ -131,6 +140,7 @@ function displayWeather({ name, main, weather }) {
 
   makeAdvice();
 }
+
 
 
 // --- Fetch Air Quality from OpenWeather ---
@@ -157,7 +167,13 @@ function displayAQI(aqi) {
     4: "Poor",
     5: "Very Poor"
   };
-  aqiInfo.innerHTML = `<strong>${aqi}</strong> — ${map[aqi] || "Unknown"}`;
+  
+  aqiInfo.innerHTML = `
+  <span class="${aqi >= 4 ? 'aqi-pulse' : ''}">
+    <strong>${aqi}</strong> — ${map[aqi]}
+  </span>
+`;
+
 }
 
 // --- Compose health advice using simple rules ---
